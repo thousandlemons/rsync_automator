@@ -1,0 +1,2 @@
+# {name} {generated_mark}
+{schedule}  bash {absolute_script_path}

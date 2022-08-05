@@ -1,0 +1,7 @@
+# ...
+# All existing crontab entries are preserved as-is
+# The automatically generated entries will be appended to the end
+# ========== EXAMPLE BEGINS ==========
+
+# My Awesome Project [Backup my home folders]
+0 0 * * * bash /path/to/cloned_rsync_automator_repo/output/rsync_my-awesome-project.sh

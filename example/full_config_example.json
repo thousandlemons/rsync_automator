@@ -1,0 +1,48 @@
+{
+  "direction": "push",
+  "source_root": "/home/myname",
+  "dest_root": "myname@10.1.2.3:/path/to/dest/folder/10.1.2.3/home/myname",
+  "ssh_port": 22,
+  "log_dir_name": "__rsync_logs__",
+  "max_log_files": 10,
+  "generated_crontab_comment_mark": "[Backup my home folders]",
+  "global_exclude": [
+    ".DS_Store",
+    "._*",
+    "desktop.ini",
+    "Thumbs.db",
+    "@eaDir"
+  ],
+  "global_args": [
+    "--protect-args",
+    "--recursive",
+    "--delete",
+    "--times",
+    "--omit-dir-times",
+    "--itemize-changes",
+    "--verbose",
+    "--human-readable",
+    "--progress",
+    "--stats"
+  ],
+  "tasks": [
+    {
+      "name": "My Awesome Project",
+      "source_path": "/Documents/My Awesome Project/",
+      "dest_path": "/My Awesome Project/",
+      "exclude": [
+        "temp/",
+        "output/"
+      ],
+      "args": [
+        "--chmod=777"
+      ],
+      "schedule": "0 0 * * *"
+    },
+    {
+      "name": "Favorite Songs",
+      "source_path": "/Music/Favorite/",
+      "dest_path": "/Favorite Songs/"
+    }
+  ]
+}

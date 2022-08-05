@@ -1,0 +1,32 @@
+#!/bin/bash
+
+execute_rsync() {{
+  echo "Start Time: $(date -Iseconds)"
+  echo "Source: {rsync_source}"
+  echo "Destination: {rsync_dest}"
+  printf "\n========== RSYNC BEGINS ==========\n\n"
+
+  rsync \
+{multiline_args}
+    "{rsync_source}" \
+    "{rsync_dest}"
+
+  printf "\n========== RSYNC ENDS ==========\n\n"
+
+  if {enable_logging}; then
+    echo "Keeping {max_log_files} most recent log files only; log files to remove:"
+    ls -dtp "{log_dir}"* | grep -v '/$' | tail -n +{max_log_files} | while IFS= read -r f; do echo "$f"; done
+    ls -dtp "{log_dir}"* | grep -v '/$' | tail -n +{max_log_files} | xargs -I {{}} rm -- {{}}
+  fi
+
+  printf "\nEnd Time: $(date -Iseconds)"
+  echo
+}}
+
+if {enable_logging}; then
+  mkdir -p "{log_dir}"
+  LOG_FILE_PATH="{log_dir}$(date +"%Y-%m-%d %H-%M-%S").log"
+  execute_rsync > >(tee "$LOG_FILE_PATH") 2>&1
+else
+  execute_rsync
+fi
