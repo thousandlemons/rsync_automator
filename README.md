@@ -31,6 +31,7 @@ A simplified config file may look like this:
 
 ```json
 {
+  "rsync": "/usr/bin/rsync",
   "direction": "push",
   "source_root": "/home/myname",
   "dest_root": "myname@10.1.2.3:/path/to/dest/folder/10.1.2.3/home/myname",
@@ -182,6 +183,7 @@ The `Config` object is the root object in `config.json`.
 
 | Field                            | Required? | Type       | Explanation                                                                                                                                                                                                                                                                                                                           | 
 |----------------------------------|-----------|------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `rsync`                          | Optional  | String     | The path to the rsync binary (e.g. /usr/bin/rsync or /usr/local/bin/rsync). If not set, the default value is just `"rsync"` without any absolute path.                                                                                                                                                                                |
 | `direction`                      | Required  | String     | Either `"push"` or `"pull"`. If the source is on the local device and the destination is on a remote device, it's a `"push"`. Otherwise, it's a `"pull"`.                                                                                                                                                                             | 
 | `source_root`                    | Required  | String     | An absolute path on the source device.                                                                                                                                                                                                                                                                                                | 
 | `dest_root`                      | Required  | String     | An absolute path on the destination device.                                                                                                                                                                                                                                                                                           | 
