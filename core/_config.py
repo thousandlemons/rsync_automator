@@ -25,6 +25,7 @@ class ConfigKeys(object):
     TASKS = 'tasks'
 
     ALL_CONFIG_KEYS = {
+        RSYNC,
         DIRECTION,
         SOURCE_ROOT,
         DEST_ROOT,
