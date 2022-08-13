@@ -12,6 +12,7 @@ class ConfigKeys(object):
     """
     Keys in the config.json file
     """
+    RSYNC = 'rsync'
     DIRECTION = 'direction'
     SOURCE_ROOT = 'source_root'
     DEST_ROOT = 'dest_root'

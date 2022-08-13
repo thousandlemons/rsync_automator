@@ -5,6 +5,7 @@ import unicodedata
 from _config import Paths, ConfigKeys, TaskKeys
 
 # Values
+_DEFAULT_RSYNC = 'rsync'
 _DIRECTION_PUSH = 'push'
 _DIRECTION_PULL = 'pull'
 _VALID_DIRECTIONS = {_DIRECTION_PUSH, _DIRECTION_PULL}
@@ -23,6 +24,7 @@ _RSYNC_SCRIPT_NAME_TEMPLATE = 'rsync_{name}.sh'
 
 
 class RsyncProject(object):
+    rsync: str = None
     direction: str = None
     source_root: str = None
     dest_root: str = None
@@ -38,6 +40,7 @@ class RsyncProject(object):
 
     def __init__(self, config: dict):
         RsyncProject._validate_config_dict(config)
+        self.rsync = config.get(ConfigKeys.RSYNC, _DEFAULT_RSYNC)
         self.direction = config[ConfigKeys.DIRECTION]
         self.source_root = config[ConfigKeys.SOURCE_ROOT]
         self.dest_root = config[ConfigKeys.DEST_ROOT]
@@ -147,6 +150,7 @@ class RsyncTask(object):
         kwargs = {
             _RsyncTemplateKeys.RSYNC_SOURCE: rsync_source,
             _RsyncTemplateKeys.RSYNC_DEST: rsync_dest,
+            _RsyncTemplateKeys.RSYNC: self._rsync_project.rsync,
             _RsyncTemplateKeys.MULTILINE_ARGS: self._generate_multiline_rsync_args(),
             _RsyncTemplateKeys.ENABLE_LOGGING: _PYTHON_BOOLEAN_TO_BASH_MAP[
                 self._rsync_project.is_logging_enabled],
@@ -206,6 +210,7 @@ class RsyncTask(object):
 class _RsyncTemplateKeys(object):
     RSYNC_SOURCE = 'rsync_source'
     RSYNC_DEST = 'rsync_dest'
+    RSYNC = 'rsync'
     MULTILINE_ARGS = 'multiline_args'
     ENABLE_LOGGING = 'enable_logging'
     LOG_DIR = 'log_dir'

@@ -6,7 +6,7 @@ execute_rsync() {{
   echo "Destination: {rsync_dest}"
   printf "\n========== RSYNC BEGINS ==========\n\n"
 
-  rsync \
+  {rsync} \
 {multiline_args}
     "{rsync_source}" \
     "{rsync_dest}"

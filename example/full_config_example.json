@@ -1,4 +1,5 @@
 {
+  "rsync": "/usr/local/bin/rsync",
   "direction": "push",
   "source_root": "/home/myname",
   "dest_root": "myname@10.1.2.3:/path/to/dest/folder/10.1.2.3/home/myname",
