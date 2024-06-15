@@ -4,6 +4,7 @@
   "source_root": "/home/myname",
   "dest_root": "myname@10.1.2.3:/path/to/dest/folder/10.1.2.3/home/myname",
   "ssh_port": 22,
+  "ssh_key_file": "/home/my username/.ssh/id_ed25519",
   "log_dir_name": "__rsync_logs__",
   "max_log_files": 10,
   "generated_crontab_comment_mark": "[Backup my home folders]",

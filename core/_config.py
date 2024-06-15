@@ -17,6 +17,7 @@ class ConfigKeys(object):
     SOURCE_ROOT = 'source_root'
     DEST_ROOT = 'dest_root'
     SSH_PORT = 'ssh_port'
+    SSH_KEY_FILE = 'ssh_key_file'
     LOG_DIR_NAME = 'log_dir_name'
     MAX_LOG_FILES = 'max_log_files'
     GENERATED_CRONTAB_COMMENT_MARK = 'generated_crontab_comment_mark'
@@ -30,6 +31,7 @@ class ConfigKeys(object):
         SOURCE_ROOT,
         DEST_ROOT,
         SSH_PORT,
+        SSH_KEY_FILE,
         LOG_DIR_NAME,
         MAX_LOG_FILES,
         GENERATED_CRONTAB_COMMENT_MARK,

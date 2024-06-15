@@ -17,7 +17,9 @@ _PYTHON_BOOLEAN_TO_BASH_MAP = {
 
 # Templates
 _RSYNC_SCRIPT_TEMPLATE_FILE = os.path.join(Paths.TEMPLATE_DIR, 'rsync.sh.template')
-_RSYNC_SSH_ARG_TEMPLATE = '-e "ssh -p {port}"'
+_RSYNC_SSH_ARG_TEMPLATE = '-e "ssh {ssh_args}"'
+_RSYNC_SSH_PORT_TEMPLATE = '-p {port}'
+_RSYNC_SSH_KEY_FILE_TEMPLATE = '-i \\"{key_file}\\"'
 _RSYNC_EXCLUDE_ARG_TEMPLATE = '--exclude "{pattern}"'
 _RSYNC_ARG_LINE_TEMPLATE = '    {arg} \\'
 _RSYNC_SCRIPT_NAME_TEMPLATE = 'rsync_{name}.sh'
@@ -29,7 +31,8 @@ class RsyncProject(object):
     source_root: str = None
     dest_root: str = None
     ssh_port: int = None
-    log_dir_name: str = None,
+    ssh_key_file: str = None
+    log_dir_name: str = None
     max_log_files: int = None
     global_excludes: list[str] = None
     global_args: list[str] = None
@@ -45,11 +48,13 @@ class RsyncProject(object):
         self.source_root = config[ConfigKeys.SOURCE_ROOT]
         self.dest_root = config[ConfigKeys.DEST_ROOT]
 
+        self.is_ssh_enabled = False
         if ConfigKeys.SSH_PORT in config:
             self.is_ssh_enabled = True
             self.ssh_port = config[ConfigKeys.SSH_PORT]
-        else:
-            self.is_ssh_enabled = False
+        if ConfigKeys.SSH_KEY_FILE in config:
+            self.is_ssh_enabled = True
+            self.ssh_key_file = config[ConfigKeys.SSH_KEY_FILE]
 
         if ConfigKeys.LOG_DIR_NAME in config:
             self.is_logging_enabled = True
@@ -192,10 +197,19 @@ class RsyncTask(object):
         patterns.extend(self.exclude)
         return [_RSYNC_EXCLUDE_ARG_TEMPLATE.format(pattern=pattern) for pattern in patterns]
 
+    def _generate_ssh_args(self) -> str:
+        ssh_arg_list = list()
+        if self._rsync_project.ssh_port:
+            ssh_arg_list.append(_RSYNC_SSH_PORT_TEMPLATE.format(port=self._rsync_project.ssh_port))
+        if self._rsync_project.ssh_key_file:
+            ssh_arg_list.append(
+                    _RSYNC_SSH_KEY_FILE_TEMPLATE.format(key_file=self._rsync_project.ssh_key_file))
+        return ' '.join(ssh_arg_list)
+
     def _generate_multiline_rsync_args(self) -> str:
         args = []
         if self._rsync_project.is_ssh_enabled:
-            args.append(_RSYNC_SSH_ARG_TEMPLATE.format(port=self._rsync_project.ssh_port))
+            args.append(_RSYNC_SSH_ARG_TEMPLATE.format(ssh_args=self._generate_ssh_args()))
         args.extend(self._rsync_project.global_args)
         args.extend(self.args)
         args.extend(self._generate_rsync_exclude_arg_list())

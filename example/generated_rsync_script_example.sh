@@ -9,7 +9,7 @@ execute_rsync() {
   printf "\n========== RSYNC BEGINS ==========\n\n"
 
   rsync \
-    -e "ssh -p 22222" \
+    -e "ssh -p 22222 \"/home/my username/.ssh/id_ed25519\"" \
     --protect-args \
     --recursive \
     --delete \
